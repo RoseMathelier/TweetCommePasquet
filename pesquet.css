@@ -1,0 +1,23 @@
+h1{
+  margin: 10px;
+  text-align: center;
+  font-family: "Calibri","Arial",sans-serif;
+}
+
+#container{
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-end;
+}
+
+#map{
+  width: 600px;
+  height: 510px;
+  margin: 50px;
+}
+
+#position{
+  margin-right: 50px;
+  margin-bottom: 50px;
+  font-family: "Calibri","Arial",sans-serif;
+}

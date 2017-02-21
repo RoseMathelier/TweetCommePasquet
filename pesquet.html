@@ -23,6 +23,18 @@
       <div id = "validation"></div>
     </div>
 
+    <div id="formulaire">
+      <form method="post" action="traitement.php">
+        <p>
+          Niveau de zoom :
+          <p id="p_smartphone"><input type="radio"  name="zoom_type" value="7" id="smartphone"><label for="7">Smartphone</label></p>
+          <p id="p_reflex"><input type="radio"  name="zoom_type" value="10" id="Réflex"><label for="7">Réflex</label></p>
+          <p id="p_teleobjectif"><input type="radio"  name="zoom_type" value="13" id="Téléobjectif"><label for="7">Téléobjectif</label></p>
+          <p id="validation"><input type="submit" name="" value="Tweet comme Pesquet !"></p>
+        </p>
+      </form>
+    </div>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwY1ddMdwE9hHqMpfYhN2ZVoFBqF1kDuI"
                 async defer></script>
 

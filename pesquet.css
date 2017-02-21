@@ -4,15 +4,15 @@ h1{
   font-family: "Calibri","Arial",sans-serif;
 }
 
-#container{
+#infos_cartes{
   display: flex;
   flex-flow: column wrap;
   align-items: flex-end;
 }
 
 #map{
-  width: 600px;
-  height: 510px;
+  width: 1000px;
+  height: 700px;
   margin: 50px;
 }
 

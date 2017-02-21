@@ -18,7 +18,7 @@ function initMap(latitude, longitude, zoom_level){
 function textPosition(latitude,longitude){
   //Ajout du texte indiquant la position
   var text_position = document.getElementById("position");
-  text_position.innerHTML = "Latitude : "+latitude.toString()+", Longitude : "+longitude.toString();
+  text_position.innerHTML = "Latitude : "+latitude.toString()+"Longitude : "+longitude.toString();
 }
 
 function getPosition() {
@@ -51,7 +51,7 @@ function getPosition() {
 
         //Tracé de la polyligne
         points.push(coord);
-        if(points.length > 1){
+        if(points.length > 1){ //on commence à tracer la polyligne dès qu'on a + de 2 points.
           var trajet_iss = new google.maps.Polyline({
             path: points,
             geodesic: true,
@@ -67,7 +67,7 @@ function getPosition() {
 }
 
 //Initialisation de la carte et de la zone de texte
-initMap(0,0,2);
+initMap(0,0,7);
 textPosition(0,0);
 
 //Mise à jour toutes les 5 secondes pour suivre la position de l'ISS.

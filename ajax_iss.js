@@ -44,9 +44,16 @@ function getPosition() {
         if(typeof(marker) != "undefined"){
           marker.setMap(null); //si un marker existe déjà, on le supprime avant de mettre le suivant
         }
+        var image_marker = {
+          url: 'satellite_detoureV2.png',
+          size: new google.maps.Size(80,80),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(20,35)
+        };
         marker = new google.maps.Marker({
           position: coord,
-          map: map
+          map: map,
+          icon: image_marker,
         });
 
         //Tracé de la polyligne

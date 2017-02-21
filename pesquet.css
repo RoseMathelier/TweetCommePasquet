@@ -11,6 +11,8 @@ h1{
 }
 
 #map{
+  display: block;
+  position: right;
   width: 1000px;
   height: 700px;
   margin: 50px;
@@ -20,4 +22,11 @@ h1{
   margin-right: 50px;
   margin-bottom: 50px;
   font-family: "Calibri","Arial",sans-serif;
+}
+
+#formulaire{
+  display: block;
+  position: left;
+  width: 180px;
+  height: 700;
 }

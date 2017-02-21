@@ -18,7 +18,7 @@ function initMap(latitude, longitude, zoom_level){
 function textPosition(latitude,longitude){
   //Ajout du texte indiquant la position
   var text_position = document.getElementById("position");
-  text_position.innerHTML = "Latitude : "+latitude.toString()+"Longitude : "+longitude.toString();
+  text_position.innerHTML = "Latitude : "+latitude.toString()+" - Longitude : "+longitude.toString();
 }
 
 function getPosition() {

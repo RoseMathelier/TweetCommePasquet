@@ -2,9 +2,13 @@ window.onload = function(){
 
 var lat_iss = 0;
 var long_iss = 0;
+
 var map;
 var marker;
-var points = new Array();
+
+var points = new Array(); //initialisation du tableau qui servira à tracer les polylignes
+points.push([]); // dans ce tableau on ajoute un tableau vide qui correspond à la première polyligne
+var nb_polylines = 1;
 
 function initMap(latitude, longitude, zoom_level){
   //Initialisation de la carte avec l'API Google Maps
@@ -40,33 +44,55 @@ function getPosition() {
         //Mise à jour de la zone texte indiquant les coordonnées de l'ISS
         textPosition(lat_iss, long_iss);
 
-        //Ajout des markers
+        // ************* Ajout des markers *************
+
+        //si un marker existe déjà, on le supprime avant de mettre le suivant
         if(typeof(marker) != "undefined"){
-          marker.setMap(null); //si un marker existe déjà, on le supprime avant de mettre le suivant
+          marker.setMap(null);
         }
+
+        //ajout du marker
         marker = new google.maps.Marker({
           position: coord,
           map: map
         });
 
-        //Tracé de la polyligne
-        points.push(coord);
-        if(points.length > 1){ //on commence à tracer la polyligne dès qu'on a + de 2 points.
-          var trajet_iss = new google.maps.Polyline({
-            path: points,
-            geodesic: true,
-            strokeColor: '#FF0000',
-            strokeOpacity: 1.0,
-            strokeWeight: 2
-          });
-          trajet_iss.setMap(map);
+        // ************* Tracé de la polyligne *************
+
+        //Gestion du problème de "saut" de latitude/longitude
+        var last_polyline = points[points.length - 1]
+        if(last_polyline[last_polyline.length - 1] < last_polyline[last_polyline.length - 2]){
+          nb_polylines++;
+          points.push([]);
+          points[nb_polylines - 1].push(coord);
         }
+        else{
+          points[nb_polylines - 1].push(coord);
+        }
+
+        //Tracé de la (ou des) polyligne(s)s
+        for(var i = 0; i < nb_polylines; i++){
+          if(points[i].length > 1){ //on commence à tracer la polyligne dès qu'on a + de 2 points.
+            var trajet_iss = new google.maps.Polyline({
+              path: points[i],
+              geodesic: true,
+              strokeColor: '#FF0000',
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+            trajet_iss.setMap(map);
+          }
+        }
+
+
       };
     }
   })
 }
 
-//Initialisation de la carte et de la zone de texte
+//*****************************************************************************************************************************************************
+
+//Première initialisation de la carte et de la zone de texte avant les appels vers l'API de l'ISS.
 initMap(0,0,7);
 textPosition(0,0);
 

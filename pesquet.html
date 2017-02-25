@@ -26,10 +26,13 @@
     <div id="formulaire">
       <form method="post" action="traitement.php">
         <p>
+          <input class="form" id="c_follow_iss" type="checkbox" name="suivre_iss" value="yes" checked="checked">Suivre l'ISS</input>
+        </p>
+        <p>
           Niveau de zoom :
-          <p id="p_smartphone"><input type="radio"  name="zoom_type" value="7" id="smartphone"><label for="7">Smartphone</label></p>
-          <p id="p_reflex"><input type="radio"  name="zoom_type" value="10" id="Réflex"><label for="7">Réflex</label></p>
-          <p id="p_teleobjectif"><input type="radio"  name="zoom_type" value="13" id="Téléobjectif"><label for="7">Téléobjectif</label></p>
+          <p id="p_smartphone"><input class="form" type="radio"  name="zoom_type" value="7" checked="checked" id="r_smartphone"><label for="7">Smartphone</label></p>
+          <p id="p_reflex"><input class="form" type="radio"  name="zoom_type" value="10" id="r_reflex"><label for="10">Réflex</label></p>
+          <p id="p_teleobjectif"><input class="form" type="radio"  name="zoom_type" value="13" id="r_teleobjectif"><label for="13">Téléobjectif</label></p>
           <p id="validation"><input type="submit" name="" value="Tweet comme Pesquet !"></p>
         </p>
       </form>

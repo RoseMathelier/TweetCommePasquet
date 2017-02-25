@@ -5,6 +5,7 @@ var long_iss = 0;
 
 var map;
 var marker;
+var zoom;
 
 var points = new Array(); //initialisation du tableau qui servira à tracer les polylignes
 points.push([]); // dans ce tableau on ajoute un tableau vide qui correspond à la première polyligne
@@ -23,6 +24,24 @@ function textPosition(latitude,longitude){
   //Ajout du texte indiquant la position
   var text_position = document.getElementById("position");
   text_position.innerHTML = "Latitude : "+latitude.toString()+" - Longitude : "+longitude.toString();
+}
+
+function setZoom(){
+  //Détermine le niveau de zoom selon les cases cochées par l'utilisateur
+  if(document.getElementById("c_follow_iss").checked == false){
+    zoom = 2;
+    map.setCenter({lat: 0, lng: 0});
+  }
+  else if(document.getElementById("r_smartphone").checked){
+    zoom = 7
+  }
+  else if(document.getElementById("r_reflex").checked){
+    zoom = 10
+  }
+  else if(document.getElementById("r_teleobjectif").checked){
+    zoom = 13
+  }
+map.setZoom(zoom);
 }
 
 function getPosition() {
@@ -98,11 +117,17 @@ function getPosition() {
 //*****************************************************************************************************************************************************
 
 //Première initialisation de la carte et de la zone de texte avant les appels vers l'API de l'ISS.
-initMap(0,0,7);
+initMap(0,0,2);
 textPosition(0,0);
 
 //Mise à jour toutes les 5 secondes pour suivre la position de l'ISS.
 setInterval(getPosition, 5000);
+
+//Listener sur le formulaire pour choisir le zoom et le centre de la carte.
+formulaire = document.getElementsByClassName("form");
+for(var i = 0; i < formulaire.length; i++){
+  formulaire[i].addEventListener("change",setZoom(),true);
+};
 
 
 }

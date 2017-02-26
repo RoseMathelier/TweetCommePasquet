@@ -4,6 +4,12 @@ h1{
   font-family: "Calibri","Arial",sans-serif;
 }
 
+#container{
+  display:flex;
+  flex-flow: row-reverse wrap;
+  justify-content: space-around;
+}
+
 #infos_carte{
   display: flex;
   flex-flow: column wrap;
@@ -13,8 +19,8 @@ h1{
 #map{
   display: block;
   position: right;
-  width: 1000px;
-  height: 700px;
+  width: 700px;
+  height: 400px;
   margin: 50px;
 }
 
@@ -29,4 +35,5 @@ h1{
   position: left;
   width: 180px;
   height: 700;
+  margin: 50px;
 }

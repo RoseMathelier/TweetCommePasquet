@@ -6,6 +6,7 @@ var long_iss = 0;
 var map;
 var marker;
 var zoom;
+var coord;
 
 var points = new Array(); //initialisation du tableau qui servira à tracer les polylignes
 points.push([]); // dans ce tableau on ajoute un tableau vide qui correspond à la première polyligne
@@ -26,24 +27,6 @@ function textPosition(latitude,longitude){
   text_position.innerHTML = "Latitude : "+latitude.toString()+" - Longitude : "+longitude.toString();
 }
 
-function setZoom(){
-  //Détermine le niveau de zoom selon les cases cochées par l'utilisateur
-  if(document.getElementById("c_follow_iss").checked == false){
-    zoom = 2;
-    map.setCenter({lat: 0, lng: 0});
-  }
-  else if(document.getElementById("r_smartphone").checked){
-    zoom = 7
-  }
-  else if(document.getElementById("r_reflex").checked){
-    zoom = 10
-  }
-  else if(document.getElementById("r_teleobjectif").checked){
-    zoom = 13
-  }
-map.setZoom(zoom);
-}
-
 function getPosition() {
   //Requête AJAX pour récupérer la position de l'ISS avec l'API 'wheretheiss'
   $.ajax({
@@ -55,10 +38,12 @@ function getPosition() {
         //Récupération des données
         lat_iss = data.responseJSON.latitude;
         long_iss = data.responseJSON.longitude;
-        var coord = {lat: lat_iss, lng: long_iss};
+        coord = {lat: lat_iss, lng: long_iss};
 
         //Mise à jour de la carte avec les données récupérées
-        map.setCenter(coord);
+        if(document.getElementById("c_follow_iss").checked){
+          map.setCenter(coord);
+        };
 
         //Mise à jour de la zone texte indiquant les coordonnées de l'ISS
         textPosition(lat_iss, long_iss);
@@ -124,10 +109,32 @@ textPosition(0,0);
 setInterval(getPosition, 5000);
 
 //Listener sur le formulaire pour choisir le zoom et le centre de la carte.
-formulaire = document.getElementsByClassName("form");
-for(var i = 0; i < formulaire.length; i++){
-  formulaire[i].addEventListener("change",setZoom(),true);
-};
+document.addEventListener("DOMContentLoaded", function (event) {
+
+    var checkbox = document.querySelector("input[name='suivre_iss']");
+    var radio = document.querySelectorAll("input[type=radio]");
+
+    checkbox.addEventListener('change', function (event) {
+        if (checkbox.checked){
+
+          for(i = 0; i < radio.length; i++){
+            radio[i].addEventListener('change', function(event){
+              if(radio[i].checked){
+                map.setZoom(radio[i].value);
+              }
+            });
+          }
+
+        }
+        else {
+
+          map.setZoom(2);
+          map.setCenter({lat: 0, lng: 0});
+
+        }
+    });
+
+});
 
 
 }

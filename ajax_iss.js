@@ -99,6 +99,18 @@ function getPosition() {
   })
 }
 
+function getGeoname() {
+  $.ajax({
+    url:"wrapper.json.php?lat="+lat_iss+"long="+long_iss,
+    dataType: "json",
+    complete: function(data){
+      if(data.readyState === 4 && data.status === 200){
+        //
+      };
+    }
+  })
+}
+
 //*****************************************************************************************************************************************************
 
 //Première initialisation de la carte et de la zone de texte avant les appels vers l'API de l'ISS.
@@ -108,14 +120,17 @@ textPosition(0,0);
 //Mise à jour toutes les 5 secondes pour suivre la position de l'ISS.
 setInterval(getPosition, 5000);
 
+
+/*
 //Listener sur le formulaire pour choisir le zoom et le centre de la carte.
 document.addEventListener("DOMContentLoaded", function (event) {
+    console.log("coucou")
 
     var checkbox = document.querySelector("input[name='suivre_iss']");
     var radio = document.querySelectorAll("input[type=radio]");
 
     checkbox.addEventListener('change', function (event) {
-        if (checkbox.checked){
+        if(checkbox.checked){
 
           for(i = 0; i < radio.length; i++){
             radio[i].addEventListener('change', function(event){
@@ -134,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
 
-});
+});*/
 
 
 }

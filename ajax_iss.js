@@ -15,6 +15,9 @@ var nb_polylines = 1;
 var location;
 var country;
 
+var photo;
+var text;
+
 function initMap(latitude, longitude, zoom_level){
   //Initialisation de la carte avec l'API Google Maps
   map = new google.maps.Map(document.getElementById('map'), {
@@ -117,7 +120,10 @@ function getZoom() {
 function getPhoto(zoom) {
   //constitue l'URL de la source de la photo grâce au zoom et aux coordonnées de l'ISS
   var espace_photo = document.getElementById("hello_photo");
-  var photo = document.createElement("img");
+  if(typeof(photo) != "undefined"){ //si une photo existe déjà, on la supprime.
+    espace_photo.removeChild(photo);
+  };
+  photo = document.createElement("img");
   photo.width = "600";
   var url = "https://maps.googleapis.com/maps/api/staticmap?center="+lat_iss.toString()+","+long_iss.toString()+"&zoom="+zoom.toString()+"&scale=false&size=600x300&maptype=roadmap&format=png&visual_refresh=true";
   photo.src = url;
@@ -142,7 +148,10 @@ function getGeoname() {
 
         //Ajout du texte dans le DOM
         var hello_para = document.createElement('p');
-        var text = "Hello, "+location+" !";
+        if(typeof(text) != "undefined"){ //si une photo existe déjà, on la supprime.
+          hello_para.removeChild(text);
+        };
+        text = "Hello, "+location+" !";
         if(typeof(country) != "undefined"){
           text = text+", "+country;
         };

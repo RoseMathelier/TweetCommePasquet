@@ -12,6 +12,9 @@ var points = new Array(); //initialisation du tableau qui servira à tracer les 
 points.push([]); // dans ce tableau on ajoute un tableau vide qui correspond à la première polyligne
 var nb_polylines = 1;
 
+var location;
+var country;
+
 function initMap(latitude, longitude, zoom_level){
   //Initialisation de la carte avec l'API Google Maps
   map = new google.maps.Map(document.getElementById('map'), {
@@ -99,17 +102,61 @@ function getPosition() {
   })
 }
 
-function getGeoname() {
-  $.ajax({
-    url:"wrapper.json.php?lat="+lat_iss+"long="+long_iss,
-    dataType: "json",
-    complete: function(data){
-      if(data.readyState === 4 && data.status === 200){
-        //
-      };
+function getZoom() {
+  //Récupère le zoom choisi
+  var r_zooms = document.getElementsByName("zoom_type");
+  for(var i = 0; i < r_zooms.length; i++){
+    if(r_zooms[i].checked){
+      zoom = r_zooms[i].value;
     }
-  })
+  }
+  console.log(zoom);
+  return zoom;
 }
+
+function getPhoto(zoom) {
+  //constitue l'URL de la source de la photo grâce au zoom et aux coordonnées de l'ISS
+  var espace_photo = document.getElementById("hello_photo");
+  var photo = document.createElement("img");
+  photo.width = "600";
+  var url = "https://maps.googleapis.com/maps/api/staticmap?center="+lat_iss.toString()+","+long_iss.toString()+"&zoom="+zoom.toString()+"&scale=false&size=600x300&maptype=roadmap&format=png&visual_refresh=true";
+  photo.src = url;
+  espace_photo.appendChild(photo);
+
+}
+
+function getGeoname() {
+  //appel ajax vers le wrapper json qui lui-même appelle l'API geonames
+  var ajax = new XMLHttpRequest();
+  var url = "wrapper_json.php?lat="+lat_iss.toString()+"&long="+long_iss.toString();
+
+  ajax.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        //Récupération de la donnée souhaitée
+        var result = this.responseJSON.geonames;
+        console.log(result);
+        var location = result[geonames.length - 1].name;
+        if(result.hasOwnProperty(countryName)){
+          var country = result[geonames.length - 1].countryName;
+        };
+
+        //Ajout du texte dans le DOM
+        var hello_para = document.createElement('p');
+        var text = "Hello, "+location+" !";
+        if(typeof(country) != "undefined"){
+          text = text+", "+country;
+        };
+        var hello_text = document.createTextNode(text);
+        hello_para.appendChild(hello_text);
+        document.getElementById("hello_tweet").appendChild(hello_para);
+      }
+  };
+
+  ajax.open("GET", url, true);
+  ajax.send();
+
+}
+
 
 //*****************************************************************************************************************************************************
 
@@ -120,36 +167,12 @@ textPosition(0,0);
 //Mise à jour toutes les 5 secondes pour suivre la position de l'ISS.
 setInterval(getPosition, 5000);
 
-
-/*
-//Listener sur le formulaire pour choisir le zoom et le centre de la carte.
-document.addEventListener("DOMContentLoaded", function (event) {
-    console.log("coucou")
-
-    var checkbox = document.querySelector("input[name='suivre_iss']");
-    var radio = document.querySelectorAll("input[type=radio]");
-
-    checkbox.addEventListener('change', function (event) {
-        if(checkbox.checked){
-
-          for(i = 0; i < radio.length; i++){
-            radio[i].addEventListener('change', function(event){
-              if(radio[i].checked){
-                map.setZoom(radio[i].value);
-              }
-            });
-          }
-
-        }
-        else {
-
-          map.setZoom(2);
-          map.setCenter({lat: 0, lng: 0});
-
-        }
-    });
-
-});*/
-
+//Event listener sur le bouton Tweet comme Pesquet
+document.getElementById("validation").addEventListener("click", function(event){
+  event.preventDefault();
+  zoom = getZoom();
+  getPhoto(zoom);
+  getGeoname();
+});
 
 }

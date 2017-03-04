@@ -1,5 +1,8 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin");
+
 //récupération des variables
 $lat = $_GET["lat"];
 $long = $_GET["long"];

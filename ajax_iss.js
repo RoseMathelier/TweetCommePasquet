@@ -12,11 +12,11 @@ var points = new Array(); //initialisation du tableau qui servira à tracer les 
 points.push([]); // dans ce tableau on ajoute un tableau vide qui correspond à la première polyligne
 var nb_polylines = 1;
 
-var location;
+var location_name;
 var country;
 
 var photo;
-var text;
+var text_loc;
 
 function initMap(latitude, longitude, zoom_level){
   //Initialisation de la carte avec l'API Google Maps
@@ -139,23 +139,38 @@ function getGeoname() {
   ajax.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         //Récupération de la donnée souhaitée
-        var result = this.responseJSON.geonames;
+        var result_text = this.responseText;
+		var result = JSON.parse(result_text);
         console.log(result);
-        var location = result[geonames.length - 1].name;
-        if(result.hasOwnProperty(countryName)){
-          var country = result[geonames.length - 1].countryName;
-        };
+		
+		//Cas où l'on est sur un continent
+		if(result.hasOwnProperty("geonames")){
+			location_name = result[geonames.length - 1].name;
+			if(result.hasOwnProperty("countryName")){
+			  var country = result[geonames.length - 1].countryName;
+			};
+		}
+		
+		//Cas où l'on est sur un océan
+		else if(result.hasOwnProperty("ocean")){
+			location_name = result.ocean.name;
+		}
+		
+		//Au cas où...
+		else{
+			location_name = "World";
+		}
 
         //Ajout du texte dans le DOM
         var hello_para = document.createElement('p');
-        if(typeof(text) != "undefined"){ //si une photo existe déjà, on la supprime.
-          hello_para.removeChild(text);
+        if(typeof(text_loc) != "undefined"){ //si le texte existe déjà, on le supprime.
+          hello_para.removeChild(text_loc);
         };
-        text = "Hello, "+location+" !";
-        if(typeof(country) != "undefined"){
-          text = text+", "+country;
+        text_loc = "Hello, "+location_name+" !";
+        if(typeof(country) != "undefined"){ //si on n'est pas au dessus de l'océan, donc s'il y a un nom de pays à ajouter, on l'ajoute.
+          text_loc = text_loc+", "+country;
         };
-        var hello_text = document.createTextNode(text);
+        var hello_text = document.createTextNode(text_loc);
         hello_para.appendChild(hello_text);
         document.getElementById("hello_tweet").appendChild(hello_para);
       }

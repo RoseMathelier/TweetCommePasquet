@@ -10,7 +10,7 @@
   </head>
   <body>
 
-    <h1>Tweet comme Pesquet</h1>
+    <h1>SpaceTweet</h1>
 
     <div id = "container">
 
@@ -23,7 +23,10 @@
       <div id="formulaire">
         <form method="post" action="traitement.php">
           <p>
-            <input class="form" id="c_follow_iss" type="checkbox" name="suivre_iss" value="yes" checked="checked">Suivre l'ISS</input>
+            <input id="c_follow_iss" type="checkbox" name="suivre_iss" checked="checked">Suivre l'ISS</input>
+		  </p>
+		  <p>
+			<input id="debug" type="checkbox" name="mode_debug">Mode debug</input>
           </p>
           <p>
             Niveau de zoom :
@@ -36,6 +39,7 @@
       </div>
 
     </div>
+
 
     <div id="hello_tweet"></div>
 
